@@ -1,0 +1,14 @@
+# https://mail.python.org/pipermail/python-list/2011-November/615602.html
+
+- Loggers are static objects managed by the module itself. When you create
+  one, it won't be removed until you leave the shell. Thas is way it is 
+  advise not to create thousands of loggers with different names.
+  That's the module design, nothing you can do about it.
+
+- Logger configuration should be done in the 'main' function *only*.
+
+- one way to cleanup a logger is to remove all its handlers, i.e. 
+  logger.handlers = [], but if you need to do this you may have done 
+  something wrong.
+
+# Target: StringIO, TestException, logger

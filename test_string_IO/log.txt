@@ -1,0 +1,1 @@
+[root][testStringIO.py:47]: ERROR - FILE error message
