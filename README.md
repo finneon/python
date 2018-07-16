@@ -1,2 +1,1 @@
-# python
-# Do something with python
+Play python
