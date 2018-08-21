@@ -1,0 +1,17 @@
+# Refs: https://idratherbewriting.com/learnapidoc/docapis_introtoapis.html
+
+# Practice curl with http://petstore.swagger.io/
+
+# petStore.py:
+    Pet Store Access From Swagger
+        [Action]    <pet_name> <pet_id>
+         get        Find pet with ID
+         add        Add pet to the store
+         delete     Delete pet from the store
+         post       Update pet (name and/or ID)
+
+# *args and **kwargs in python explained
+  https://pythontips.com/2013/08/04/args-and-kwargs-in-python-explained/
+
+  Usage of *args
+  *args and **kwargs are mostly used in function definitions. *args and **kwargs allow you to pass a variable number of arguments to a function. What does variable mean here is that you do not know before hand that how many arguments can be passed to your function by the user so in this case you use these two keywords. *args is used to send a non-keyworded variable length argument list to the function.
