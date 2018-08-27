@@ -1,0 +1,9 @@
+# Run Test for petStore.py functions
+
+# Test order:
+   - testCreatePet
+   - testModifyPet
+   - testDeletePet
+
+# How to run:
+python runTest.py

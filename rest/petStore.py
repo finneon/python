@@ -65,7 +65,6 @@ class Pet():
         os.system(curl_add)
 
     def delete(self):
-
         sub.check_output(["curl", "-X", "DELETE", self.url, "-H", self.sub_fix])
     
     def add(self):
