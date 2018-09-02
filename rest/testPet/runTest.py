@@ -17,8 +17,6 @@ for tfile in test_file:
     mod = importlib.import_module(os.path.splitext(tfile)[0])
     mod_list.append(mod)
 
-#import testCreatePet
-
 # Initialize test suite
 suite = unittest.TestSuite()
 loader = unittest.TestLoader()
