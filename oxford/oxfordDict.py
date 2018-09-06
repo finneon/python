@@ -30,31 +30,27 @@ class OxfordDict():
                           + self.word.lower()
         self.count_def = 1
 
-    def chunk_str(self, str_def):
-        ''' Split the string by 2 for nice print '''
-        if len(str_def) > 80:
-            str_split = str_def.split()
-            chunk, chunk_size = len(str_split), len(str_split) / 2
-            str_def = "\n".join([" ".join(str_split[i:i+chunk_size]) for i in range(0, chunk, chunk_size)])
-        return str_def
-
     def display(self):
         '''
         Display the main definition of word and examples.
         Then display the subsenses and examples
         '''
         r = requests.get(self.url, headers={'app_id': self.app_id, 'app_key': self.app_key})
+        if r.status_code == 404:
+            print(bcolors.BOLD + "\"" + self.word + "\"" + bcolors.ENDC + " Not Found")
+            exit(0)
         data = json.loads(json.dumps(r.json()))
-        definition = data['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'][0]
-        examples = data['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['examples']
-        print ("  " + bcolors.BOLD + bcolors.YELLOW + self.word + bcolors.ENDC)
-        print (str(self.count_def) + ". " + self.chunk_str(definition))
-        self.count_def += 1
-        for i in range(0, len(examples), 1):
-            print (bcolors.BOLD + bcolors.RED + "  . " + bcolors.ENDC + examples[i]['text'])
+        senses = data['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]
 
-        subsenses = data['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['subsenses']
-        self.display_subsenses(subsenses)
+        print ("  " + bcolors.BOLD + bcolors.YELLOW + self.word + bcolors.ENDC)
+        print (str(self.count_def) + ". " + self.chunk_str(senses['definitions'][0]))
+        self.count_def += 1
+
+        if 'examples' in senses:
+            self.display_examples(senses['examples'])
+
+        if 'subsenses' in senses:
+            self.display_subsenses(senses['subsenses'])
 
     def display_subsenses(self, str_sub):
         '''
@@ -65,9 +61,19 @@ class OxfordDict():
             print str(self.count_def) + ". " + _def
             self.count_def += 1
             if 'examples' in str_sub[i]:
-                _example = str_sub[i]['examples']
-                for i in range(0, len(_example), 1):
-                    print (bcolors.BOLD + bcolors.RED + "  . " + bcolors.ENDC + _example[i]['text'])
+                self.display_examples(str_sub[i]['examples'])
+
+    def chunk_str(self, str_def):
+        ''' Split the string by 2 for nice print '''
+        if len(str_def) > 80:
+            str_split = str_def.split()
+            chunk, chunk_size = len(str_split), len(str_split) / 2
+            str_def = "\n".join([" ".join(str_split[i:i+chunk_size]) for i in range(0, chunk, chunk_size)])
+        return str_def
+
+    def display_examples(self, examples):
+        for i in range(0, len(examples), 1):
+            print (bcolors.BOLD + bcolors.RED + "  . " + bcolors.ENDC + examples[i]['text'])
 
 def parse_argument(args):
     parser = argparse.ArgumentParser(description="Oxford learner's dictionaries",
@@ -75,12 +81,13 @@ def parse_argument(args):
     parser.add_argument("input", type=str, nargs=1,
                         help="Input word to search")
 
-    parser.parse_args(args=args)
+    options = parser.parse_args(args=args)
+    return options
 
-def main(args):
-    parse_argument(args)
-    oxf = OxfordDict(args[0])
+def main():
+    options = parse_argument(sys.argv[1:])
+    oxf = OxfordDict(options.input[0])
     oxf.display()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])  
+    main()
