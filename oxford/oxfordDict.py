@@ -29,6 +29,7 @@ class OxfordDict():
         self.url = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/' + self.language + '/' \
                           + self.word.lower()
         self.count_def = 1
+        self.type_dict = {"Noun": "(n)", "Verb": "(v)", "Adjective": "(a)"}
 
     def display(self):
         '''
@@ -41,8 +42,11 @@ class OxfordDict():
             exit(0)
         data = json.loads(json.dumps(r.json()))
         senses = data['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]
+        type = data['results'][0]['lexicalEntries'][0]['lexicalCategory']
+        pron = data['results'][0]['lexicalEntries'][0]['pronunciations'][0]['phoneticSpelling']
 
-        print ("  " + bcolors.BOLD + bcolors.YELLOW + self.word + bcolors.ENDC)
+        print (bcolors.BOLD + bcolors.YELLOW + " {} /".format(self.word) + pron + "/ "
+               + self.type_dict[type] + bcolors.ENDC)
         print (str(self.count_def) + ". " + self.chunk_str(senses['definitions'][0]))
         self.count_def += 1
 
