@@ -1,0 +1,8 @@
+# Test IMM object pyOsaf API
+
+# Create class first
+immcfg -f class.xml
+
+# Run test_immObject.py to create objects
+sampleClassId=1
+capsId=1,sampleClassId=1

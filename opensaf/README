@@ -1,0 +1,4 @@
+# Need to create openSAF cluster first, reference to: 
+https://github.com/xvuudao/docker.git
+
+# Test scripts are run on openSAF node
