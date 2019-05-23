@@ -6,13 +6,13 @@ import string
 
 ''' Check legal words 
     Legal word:
-    - Number only and acceppt leading '-' eg. -000000000001
-    - Letter only
-    - The legal words don't have punctuation eg:
-      + -10- is not legal words
-      + Neither_is_this
-      + Not -1111- neither 1111-1111 1111_1111 1111/1111 !1000 ^1000
-      + Note that dogs is legal word but not (except because it has )
+    1. Number only and accept leading '-' eg. -000000000001
+    2. Letter only
+    3. The legal words don't have punctuation eg:
+      - -10- or 12A is not legal words
+      - Neither_is_this
+      - Not -1111- neither 1111-1111 1111_1111 1111/1111 !1000 ^1000 .1000
+      - Note that dogs is legal word but not (except because it has )
 '''
 
 
@@ -21,6 +21,9 @@ class Tokens:
         self.file = file
         self.count_num = 0
         self.count_str = 0
+        self.str_pattern = re.compile("^([A-Za-z]+$)")
+        self.num_pattern = re.compile("^[0-9]+$")
+        self.negative_num_pattern = re.compile("^-[0-9]+$")
 
     def handle_file(self):
         with open(self.file, 'r') as f:
@@ -29,29 +32,12 @@ class Tokens:
 
     def handle_line(self, line):
         for word in line.split():
-            if re.search('[0-9]', word) and re.search('[A-Za-z]', word):
+            if re.match(self.str_pattern, word):
+                self.count_str += 1
+            elif re.match(self.num_pattern, word) or re.match(self.negative_num_pattern, word):
+                self.count_num += 1
+            else:
                 continue
-            elif re.search('[0-9]', word):
-                if re.search('-', word) and word.startswith('-'):
-                    # Remove the first '-' to check if number -10- or --10
-                    if re.sub('-', '', word, 1).isdigit():
-                        self.count_num += 1
-                    else:
-                        continue
-                elif self.check_punctuation(word):
-                    continue
-                else:
-                    self.count_num += 1
-            elif re.search('[A-Za-z]', word):
-                if not self.check_punctuation(word):
-                    self.count_str += 1
-
-    @staticmethod
-    def check_punctuation(word):
-        # Return True if there's punctuation
-        if len(['' for i in list(word) if i in string.punctuation]) == 0:
-            return False
-        return True
 
 
 def count_string(count_str, count_num):
@@ -60,7 +46,7 @@ def count_string(count_str, count_num):
 
 
 def main():
-    if len(sys.argv[:1]) > 1:
+    if len(sys.argv[:1]) != 1:
         print("wrong argument")
         sys.exit(1)
     else:

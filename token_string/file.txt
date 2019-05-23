@@ -1,8 +1,8 @@
 # Write test_legal.py program to count the legal words. Legal word is described below
-- Number only and acceppt leading '-' eg. -000000000001
-- Letter only
-- The legal words don't have punctuation eg:
-  + -10- is not legal words
-  + Neither_is_this
-  + Not -1111- neither 1111-1111 1111_1111 1111/1111 !1000 ^1000
-  + Note that dogs is legal word but not (except because it has )
+1. Number only and acceppt leading '-' eg. -000000000001
+2. Letter only
+3. The legal words don't have punctuation eg:
+  - -10- or 12A is not legal words
+  - Neither_is_this
+  - Not -1111- neither 1111-1111 1111_1111 1111/1111 !1000 ^1000 .1000
+  - Note that dogs is legal word but not (except because it has )
