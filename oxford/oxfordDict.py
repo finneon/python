@@ -27,9 +27,9 @@ class OxfordDict(object):
     def __init__(self, word):
         self.word = word
         self.app_id = "79b0bf7f"
-        self.app_key = "e1c41553a15e7ab359b36ec3a849e2b4"
-        self.language = 'en'
-        self.url = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/' + self.language + '/' + self.word.lower()
+        self.app_key = "f881171db1e3e7a750bd2bf250683428"
+        self.language = 'en-us'
+        self.url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/' + self.language + '/' + self.word.lower()
         self.word_type_dict = {"Noun": "n", "Verb": "v", "Adjective": "adj", "Adverb": "adv"}
 
     def build_data(self):
@@ -46,7 +46,7 @@ class OxfordDict(object):
         json_dump = json.loads(json.dumps(r.json()))
         data = {}
         for lex_dict in json_dump['results'][0]['lexicalEntries']:
-            word_type = lex_dict['lexicalCategory']
+            word_type = lex_dict['lexicalCategory']['text']
             senses = lex_dict['entries'][0]['senses']
             pron = lex_dict['pronunciations'][0]['phoneticSpelling']
             data[word_type] = [senses, pron]
